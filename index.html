@@ -1,14 +1,383 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First Web Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="description" content="Home automation ESP32 browser firmware flasher by rakabhai.">
+  <title>Home automation — ESP32 Firmware Flasher</title>
+
+  <script type="module"
+    src="https://unpkg.com/esp-web-tools@10/dist/web/install-button.js?module"></script>
+
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #111a2b;
+      --panel-2: #0f1726;
+      --text: #edf3ff;
+      --muted: #9aa9c2;
+      --border: #22304a;
+      --accent-1: #5b8cff;
+      --accent-2: #7c5cff;
+      --warning: #f6c453;
+      --danger: #ff7b7b;
+      --radius: 16px;
+      --esp-tools-button-color: #5b8cff;
+      --esp-tools-button-text-color: #ffffff;
+      --esp-tools-button-border-radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a { color: #9dbbff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 56px 0 34px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: white;
+      font-weight: 900;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 18px 0 12px;
+      font-size: clamp(34px, 6vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .lead {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(16px, 2.2vw, 19px);
+    }
+
+    main { padding: 30px 0 70px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing: -.02em;
+    }
+
+    .muted { color: var(--muted); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: #cbd7eb;
+      background: var(--panel-2);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .flash-card {
+      padding: 28px;
+      background:
+        linear-gradient(180deg, rgba(91,140,255,.08), transparent 55%),
+        var(--panel);
+    }
+
+    .flash-area {
+      margin-top: 22px;
+      padding: 20px;
+      border: 1px dashed #304363;
+      border-radius: 14px;
+      background: var(--panel-2);
+      text-align: center;
+    }
+
+    /* The button remains the real ESP Web Tools component.
+       We only provide a styled activate slot; ESP Web Tools owns the
+       serial-port selection and flashing workflow. */
+    esp-web-install-button {
+      --esp-tools-button-color: var(--accent-1);
+      --esp-tools-button-text-color: #fff;
+      --esp-tools-button-border-radius: 12px;
+      display: block;
+    }
+
+    esp-web-install-button::part(button) {
+      border-radius: 12px;
+    }
+
+    .flash-btn {
+      appearance: none;
+      border: 0;
+      width: 100%;
+      max-width: 420px;
+      min-height: 52px;
+      padding: 14px 22px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      font: inherit;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0,0,0,.22);
+      transition: transform .16s ease, filter .16s ease;
+    }
+
+    .flash-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .flash-btn:active { transform: translateY(0); }
+    .flash-btn:focus-visible {
+      outline: 3px solid rgba(157,187,255,.55);
+      outline-offset: 3px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      margin: 15px 0;
+    }
+
+    .num {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #1a2943;
+      color: #dce8ff;
+      font-weight: 800;
+    }
+
+    .warning {
+      border-color: #5c4b21;
+      background: #19160e;
+    }
+
+    .warning h2 { color: #ffe39a; }
+
+    .warning strong { color: #fff0bd; }
+
+    code {
+      color: #dce8ff;
+      background: #0a1020;
+      border: 1px solid #202d45;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: .92em;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 16px;
+      border-radius: 12px;
+      background: #080e19;
+      border: 1px solid var(--border);
+      color: #dbe6f8;
+    }
+
+    ul, ol { padding-left: 22px; }
+    li { margin: 8px 0; }
+
+    .compat {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    footer {
+      padding: 28px 0 50px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 22px, 1040px); }
+      header { padding-top: 38px; }
+      .grid, .compat { grid-template-columns: 1fr; }
+      .card, .flash-card { padding: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .flash-btn { transition: none; }
+    }
+  </style>
 </head>
+
 <body>
+  <header>
+    <div class="wrap">
+      <div class="brand"><span class="brand-mark">HA</span> rakabhai · Home automation</div>
+      <h1>ESP32 firmware flashing, directly from your browser.</h1>
+      <p class="lead">
+        A lightweight ESP Web Tools portal for the <strong>ESP32 Dev Module</strong>.
+        No desktop flashing application is required when using a supported browser and USB connection.
+      </p>
+    </div>
+  </header>
 
-    <h1>Hello, World!</h1>
-    <p>Welcome to my simple website.</p>
+  <main class="wrap">
+    <section class="card flash-card" aria-labelledby="flash-title">
+      <span class="badge">ESP32 · Browser Flasher</span>
+      <h2 id="flash-title" style="font-size:28px;margin-top:16px;">Install Home automation firmware</h2>
+      <p class="muted">
+        Connect the ESP32 by USB, close programs that may be using its serial port, then press the button.
+        ESP Web Tools will handle browser serial-port selection and the flashing process.
+      </p>
 
+      <div class="flash-area">
+        <esp-web-install-button manifest="./manifest.json">
+          <button slot="activate" class="flash-btn" type="button">
+            Flash Firmware
+          </button>
+          <div slot="unsupported" class="muted">
+            Web Serial is not available here. Use a current Google Chrome or Microsoft Edge browser on desktop.
+          </div>
+          <div slot="not-allowed" class="muted">
+            This page must be opened over HTTPS (GitHub Pages provides HTTPS).
+          </div>
+        </esp-web-install-button>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Supported board</h2>
+        <p><strong>ESP32 Dev Module</strong></p>
+        <p class="muted">Chip family: ESP32</p>
+        <p class="muted">USB connection: USB-to-UART or a compatible USB serial interface.</p>
+      </section>
+
+      <section class="card">
+        <h2>Before flashing</h2>
+        <ul class="muted">
+          <li>Use a data-capable USB cable.</li>
+          <li>Back up anything important on the device.</li>
+          <li>Do not disconnect power while flashing.</li>
+          <li>Allow the browser to access the serial port.</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>How to flash</h2>
+      <div class="step"><span class="num">1</span><div>Connect the ESP32 Dev Module to your computer with a USB data cable.</div></div>
+      <div class="step"><span class="num">2</span><div>Open this GitHub Pages website in Google Chrome or Microsoft Edge.</div></div>
+      <div class="step"><span class="num">3</span><div>Press <strong>Flash Firmware</strong> and select the ESP32 serial port in the browser dialog.</div></div>
+      <div class="step"><span class="num">4</span><div>Wait until ESP Web Tools reports that installation is complete. Do not unplug the board during the process.</div></div>
+      <div class="step"><span class="num">5</span><div>Reset the ESP32 and verify that the new Home automation firmware starts normally.</div></div>
+    </section>
+
+    <section class="card warning" style="margin-top:18px;">
+      <h2>Important firmware note</h2>
+      <p>
+        The supplied firmware filenames are the four separate ESP32 images from your build.
+        ESP Web Tools' current documentation recommends a merged ESP32 binary for modern ESP-IDF/ESP32 builds
+        because it cannot dynamically patch flash mode, frequency and size like <code>esptool</code>.
+        If your exact firmware was produced by Arduino IDE and the four-part manifest fails, create and publish
+        a merged binary using the instructions in the project README.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:18px;">
+      <h2>Troubleshooting</h2>
+      <ul>
+        <li><strong>“Failed to download manifest”:</strong> open <code>/manifest.json</code> directly. It must return JSON, not a GitHub 404/HTML page.</li>
+        <li><strong>BIN download fails:</strong> open each firmware URL directly and verify it downloads as a binary file. Check spelling and capitalization.</li>
+        <li><strong>Serial port is missing:</strong> install the USB-UART driver used by your ESP32 board, reconnect it, and check the operating system's device list.</li>
+        <li><strong>Connection fails:</strong> close Arduino Serial Monitor/PlatformIO/other serial applications, use a known-good USB data cable, then retry.</li>
+        <li><strong>Manual bootloader:</strong> hold <strong>BOOT</strong>, press/release <strong>EN/RESET</strong>, keep BOOT held briefly, then release BOOT and retry the connection.</li>
+        <li><strong>GitHub Pages 404:</strong> confirm Pages is publishing the correct branch/folder and that <code>index.html</code> is in that published location.</li>
+        <li><strong>Old manifest/cache:</strong> hard-refresh the page or open it in a private window after changing firmware files.</li>
+        <li><strong>ESP32-S3:</strong> this portal targets the ESP32 Dev Module. ESP32-S3 has different USB/serial behavior; use a separate S3 build/manifest if you later add S3 support.</li>
+      </ul>
+    </section>
+
+    <section class="card" style="margin-top:18px;">
+      <h2>Browser & USB requirements</h2>
+      <div class="compat">
+        <div class="mini"><strong>Google Chrome</strong><br><span class="muted">Recommended desktop browser.</span></div>
+        <div class="mini"><strong>Microsoft Edge</strong><br><span class="muted">Supported desktop browser.</span></div>
+        <div class="mini"><strong>USB driver</strong><br><span class="muted">Install the driver required by your board's USB-UART chip if the port is not detected.</span></div>
+      </div>
+      <p class="muted" style="margin-top:16px;">
+        Web Serial requires a secure HTTPS context. GitHub Pages is therefore preferable to opening the site from a local
+        <code>file://</code> URL.
+      </p>
+    </section>
+
+    <section class="card" style="margin-top:18px;">
+      <h2>Tutorial / documentation</h2>
+      <p class="muted">
+        No project-specific tutorial video URL was supplied. The button below points to the official ESP Web Tools documentation.
+      </p>
+      <p><a href="https://esphome.github.io/esp-web-tools/" target="_blank" rel="noopener">Open ESP Web Tools documentation ↗</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Home automation · Firmware portal · Created for rakabhai
+    </div>
+  </footer>
 </body>
 </html>
