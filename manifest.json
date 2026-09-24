@@ -1,0 +1,29 @@
+{
+  "name": "Home automation",
+  "version": "1.0.0",
+  "builds": [
+    {
+      "chipFamily": "ESP32",
+      "improv": false,
+      "parts": [
+        {
+          "path": "firmware/sketch_sep24a.cpp.bootloader.bin",
+          "offset": 4096
+        },
+        {
+          "path": "firmware/sketch_sep24a.cpp.partitions.bin",
+          "offset": 32768
+        },
+        {
+          "path": "firmware/boot_app0.bin",
+          "offset": 57344
+        },
+        {
+          "path": "firmware/sketch_sep24a.cpp.bin",
+          "offset": 65536
+        }
+      ]
+    }
+  ]
+}
+
