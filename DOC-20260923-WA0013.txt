@@ -1,0 +1,317 @@
+ I want you to create a COMPLETE professional browser-based ESP firmware flashing portal for my project using ESP Web Tools and GitHub Pages.
+
+The goal is to let users flash firmware directly from Chrome/Edge browser without installing any desktop software.
+
+I want a FULL step-by-step setup guide along with ALL required files and code.
+
+Generate EVERYTHING needed from scratch.
+
+==================================================
+IMPORTANT DESIGN GOAL
+=====================
+
+The final webpage should look:
+
+* modern
+* clean
+* smooth
+* responsive
+* lightweight
+* professional
+
+BUT it should NOT be overly fancy or heavy.
+
+Avoid:
+
+* excessive animations
+* heavy glowing effects
+* GPU-heavy CSS
+* large blur filters
+* complicated animated backgrounds
+* too many shadows
+* laggy effects
+* excessive glassmorphism
+* anything that causes browser lag
+
+The page must stay:
+
+* lightweight
+* smooth
+* fast
+* optimized
+* responsive on low-end laptops
+
+==================================================
+PROJECT REQUIREMENTS
+====================
+
+1. Use ESP Web Tools
+2. Host the project on GitHub Pages
+3. Generate:
+
+   * index.html
+   * manifest.json
+   * proper folder structure
+4. The flasher must support my ESP board
+5. Include all required BIN files in manifest
+6. Use HEX offsets WITH DOUBLE QUOTES around offsets
+7. Create a clean modern UI
+8. Add project branding and customization
+9. Add installation instructions on webpage
+10. Add tutorial video button/link
+11. Make the UI responsive
+12. Mention common flashing troubleshooting steps
+13. Explain how to upload everything to GitHub
+14. Explain how to enable GitHub Pages
+15. Explain how to test firmware flashing
+16. Explain how to verify manifest and BIN file paths
+17. Mention browser compatibility requirements
+18. Mention USB driver installation if needed
+
+==================================================
+MY PROJECT DETAILS
+==================
+
+Project Name:
+Home automation
+
+Creator/Brand Name:
+rakabhai
+
+Supported Board:
+ESP32 Dev Module
+
+Chip Family:
+ESP32
+
+Tutorial Video Link:
+
+
+==================================================
+FIRMWARE FILES
+==============
+
+1.
+
+File Name:
+sketch_sep24a.cpp.bootloader.bin
+
+Offset:
+"0x1000"
+
+2.
+
+File Name:
+sketch_sep24a.cpp.partitions.bin
+
+Offset:
+"0x8000"
+
+3.
+
+File Name:
+boot_app0.bin
+
+Offset:
+"0xe000"
+
+4.
+
+File Name:
+sketch_sep24a.cpp.bin
+
+Offset:
+"0x10000"
+
+IMPORTANT:
+All offsets in manifest.json MUST be written EXACTLY like this:
+
+"offset": "0x10000"
+
+and NOT like this:
+
+"offset": 0x10000
+
+==================================================
+VERY IMPORTANT INSTALL BUTTON REQUIREMENTS
+==========================================
+
+The Flash Firmware button MUST:
+
+* fully work
+* correctly trigger ESP Web Tools
+* correctly open serial port selection
+* NOT break functionality
+* NOT use fake/custom disconnected buttons
+
+IMPORTANT:
+Many generated examples visually style the button but accidentally break the ESP Web Tools functionality.
+
+DO NOT do that.
+
+The Flash Firmware button must remain:
+
+* fully clickable
+* fully functional
+* connected directly to ESP Web Tools
+* reliable
+
+==================================================
+BUTTON DESIGN REQUIREMENTS
+==========================
+
+The Flash Firmware button currently looks too basic in most outputs.
+
+I want a MODERN CLEAN BUTTON that:
+
+* matches the website theme
+* looks professional
+* looks integrated with UI
+* looks polished
+* does NOT look like default browser button
+* does NOT look like raw ESP Web Tools component
+
+BUT:
+Keep it SIMPLE and LIGHTWEIGHT.
+
+Avoid:
+
+* heavy animations
+* complicated effects
+* excessive glowing
+* laggy transitions
+
+The button should use:
+
+* modern gradient background
+* rounded corners
+* hover effect
+* clean typography
+* subtle shadow
+* smooth transition
+* proper spacing
+* modern color palette
+
+The button should visually feel like:
+
+* modern SaaS dashboard
+* GitHub style UI
+* clean Apple-style UI
+* premium but lightweight
+
+IMPORTANT:
+Do NOT hide the actual ESP Web Tools component.
+
+Instead:
+Directly style the REAL install button using CSS so functionality remains intact.
+
+The final Flash Firmware button should:
+
+* work perfectly
+* look modern
+* stay lightweight
+* match the theme
+* feel polished
+* NOT lag the page
+
+==================================================
+WEBSITE UI REQUIREMENTS
+=======================
+
+Use:
+
+* clean dark UI
+* modern typography
+* lightweight gradients
+* subtle shadows
+* responsive layout
+* clean cards
+* balanced spacing
+
+Include:
+
+* project title
+* subtitle
+* supported board section
+* flashing instructions
+* warning section
+* tutorial button
+* footer branding
+
+The UI should look:
+
+* clean
+* elegant
+* modern
+* professional
+* optimized
+
+NOT:
+
+* flashy
+* over-animated
+* cyberpunk overload
+* GPU-heavy
+
+==================================================
+PLEASE GENERATE
+===============
+
+1. Complete folder structure
+2. Complete manifest.json
+3. Complete optimized index.html
+4. Lightweight CSS styling
+5. Properly working Flash Firmware button
+6. GitHub Pages deployment guide
+7. Troubleshooting section
+8. Recommended repository structure
+9. Common mistakes to avoid
+10. Expected final GitHub Pages URL structure
+11. Instructions to upload firmware files
+12. Instructions to verify firmware URLs
+13. Browser compatibility section
+14. USB driver section
+15. Bootloader/manual flashing instructions
+
+==================================================
+ALSO EXPLAIN
+============
+
+* How to fix “Failed to download manifest”
+* How to fix flashing connection issues
+* How to fix GitHub Pages 404 issues
+* How to manually enter bootloader mode
+* How to verify BIN files are accessible online
+* How to test manifest.json directly in browser
+* How to clear browser cache issues
+* How to verify correct file paths
+* How to troubleshoot ESP32-S3 connection issues
+
+==================================================
+IMPORTANT
+=========
+
+Generate everything in a BEGINNER-FRIENDLY way with:
+
+* exact code blocks
+* exact filenames
+* exact folder names
+* complete HTML
+* complete CSS
+* complete manifest.json
+* exact GitHub Pages setup steps
+
+Do NOT skip any steps.
+
+The final output should be:
+
+* production-ready
+* visually clean
+* lightweight
+* smooth
+* optimized
+* responsive
+* fully functional
+* modern
+* polished
+* reliable
